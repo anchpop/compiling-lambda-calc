@@ -1,0 +1,13 @@
+{
+    "name": "compilation",
+    "scripts": {
+    },
+    "dependencies": {
+      "ocaml": "4.12.",
+      "@opam/dune": "*"
+    },
+    "devDependencies": {
+      "@opam/ocaml-lsp-server": "*",
+      "@reason-native/rely": "*"
+    }
+  }

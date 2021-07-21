@@ -1,3 +1,5 @@
+// TODO: add numbers, and successor, so I can more easily observe the behavior of the interpreter without having to try to interpret compiled church-encoded numbers...
+
 [@deriving show]
 type lang =
   | Var(int) // we're using de brujn indices

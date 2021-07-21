@@ -1,9 +1,9 @@
 Console.log("Running Test Program:");
 
 let _lc = Lib.Lang.(App(Lambda(Var(0)), [Lambda(Var(0))]));
-let one = Lib.Lang.(Lambda(Lambda(App(Var(0), [Var(0)]))));
+let one = Lib.Lang.(Lambda(Lambda(App(Var(1), [Var(0)]))));
 let two =
-  Lib.Lang.(Lambda(Lambda(App(Var(0), [App(Var(0), [Var(0)])]))));
+  Lib.Lang.(Lambda(Lambda(App(Var(1), [App(Var(1), [Var(0)])]))));
 let plus =
   Lib.Lang.(
     Lambda(

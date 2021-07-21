@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@opam/dune": ">=2.6",
+    "@opam/ppx_deriving": "*",
     "@reason-native/console": "*",
     "@reason-native/pastel": "*",
     "@esy-ocaml/reason": ">= 3.6.0 < 4.0.0",

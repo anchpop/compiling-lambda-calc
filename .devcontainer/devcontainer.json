@@ -16,10 +16,6 @@
 		"editor.formatOnPaste": true,
 		"editor.tabSize": 2,
 		"git.autofetch": true,
-		"ocaml.sandbox": {
-			"kind": "esy",
-			"root": "${workspaceFolder:sidechain}"
-		},
 		"indentRainbow.ignoreErrorLanguages": [
 			"*"
 		]

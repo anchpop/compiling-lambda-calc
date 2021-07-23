@@ -32,9 +32,9 @@ type env_item =
 [@deriving show]
 [@deriving eq]
 and stack_item =
-  | Marker
   | Z(zinc)
   | Clos(clos)
+  | Marker(list(zinc), list(env_item))
 
 [@deriving show]
 [@deriving eq]
@@ -42,16 +42,16 @@ and clos = {
   code: list(zinc),
   env: list(env_item),
 };
-let env_to_stack = x =>
+let rec env_to_stack = x =>
   switch (x) {
   | ZE(z) => Z(z)
   | ClosE({code: c, env: e}) => Clos({code: c, env: e})
   };
-let stack_to_env = x =>
+let rec stack_to_env = x =>
   switch (x) {
   | Z(z) => ZE(z)
   | Clos({code: c, env: e}) => ClosE({code: c, env: e})
-  | Marker =>
+  | Marker(_, _) =>
     Printf.eprintf("tried to convert a marker to an environment item");
     assert(false);
   };
@@ -124,7 +124,8 @@ let rec pretty_stack_item = (e: stack_item) =>
   | Z(z) => pretty_zinc(z)
   | Clos({code: c, env: e}) =>
     Printf.sprintf("(%s)[%s]", pretty_zincs(c), pretty_env_items(e))
-  | Marker => "▒"
+  | Marker(c, e) =>
+    Printf.sprintf("▒(%s, %s)", pretty_zincs(c), pretty_env_items(e))
   }
 and pretty_stack_items = (s: list(stack_item)) =>
   String.concat(" ", List.map(item => pretty_stack_item(item), s));
@@ -180,18 +181,19 @@ let apply_zinc = state => {
     stack: list(stack_item),
   ) = state;
   let stackify = List.map(x => Z(x));
+  let envify = List.map(x => ZE(x));
   let env_to_stack_l = List.map(env_to_stack);
   switch (instructions, env, stack) {
   | ([Grab, ...c], env, [Z(v), ...s]) => (c, [ZE(v), ...env], s)
   | ([Grab, ...c], env, [Clos(v), ...s]) => (c, [ClosE(v), ...env], s)
-  | ([Grab, ...c], env, [Marker, Z(c'), (Z(_) | Clos(_)) as e', ...s]) => (
-      [c'],
-      [stack_to_env(e')],
+  | ([Grab, ...c], env, [Marker(c', e'), ...s]) => (
+      c',
+      e',
       [Clos({code: [Grab, ...c], env}), ...s],
     )
-  | ([Return, ...c], env, [Z(v), Marker, Z(c'), Z(e'), ...s]) => (
-      [c'],
-      [ZE(e')],
+  | ([Return, ...c], env, [Z(v), Marker(c', e'), ...s]) => (
+      c',
+      e',
       [Z(v), ...s],
     )
   | ([Return, ...c], env, [Clos({code: c', env: e'}), ...s]) => (
@@ -199,11 +201,7 @@ let apply_zinc = state => {
       e',
       s,
     )
-  | ([PushRetAddr(c'), ...c], env, s) => (
-      c,
-      env,
-      [Marker, ...stackify(c')] @ env_to_stack_l(env) @ s,
-    )
+  | ([PushRetAddr(c'), ...c], env, s) => (c, env, [Marker(c', env), ...s])
   | ([Apply, ...c], env, [Clos({code: c', env: e'}), ...s]) => (c', e', s)
   // Below here is just modern SECD
   | ([Access(n), ...c], env, s) => (

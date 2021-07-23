@@ -16,12 +16,12 @@ let () = Printf.printf("one: %s \n", pretty_lang(one));
 let () = Printf.printf("two: %s \n", pretty_lang(two));
 let () = Printf.printf("succ: %s \n", pretty_lang(succlc));
 let () = Printf.printf("plus: %s \n\n", pretty_lang(plus));
-let _lc = App(App(plus, [two, one]), [Lambda(S(Var(0))), Z]);
+let lc = App(App(plus, [two, one]), [Lambda(S(Var(0))), Z]);
 let _lc = App(plus, [two, one]);
 let _lc = App(Lambda(App(Var(0), [Z])), [Lambda(S(Var(0)))]);
 let _lc = App(Lambda(S(Var(0))), [Z]);
 
-let lc = App(two, [Lambda(S(Var(0))), Z]);
+let _lc = App(two, [Lambda(S(Var(0))), Z]);
 
 let () = print_endline(pretty_lang_rev(lc, true));
 let () = print_endline("↓");
@@ -47,5 +47,5 @@ let _ =
       itered;
     },
     initial_state,
-    range(0, 40),
+    range(0, 50),
   );

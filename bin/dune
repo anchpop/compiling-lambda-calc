@@ -1,4 +1,5 @@
 (executable
  (name Hello)
  (public_name Hello)
+ (flags -rectypes)
  (libraries console.lib lib))

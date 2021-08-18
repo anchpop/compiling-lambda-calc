@@ -180,9 +180,6 @@ let apply_zinc = state => {
     env: list(env_item),
     stack: list(stack_item),
   ) = state;
-  let stackify = List.map(x => Z(x));
-  let envify = List.map(x => ZE(x));
-  let env_to_stack_l = List.map(env_to_stack);
   switch (instructions, env, stack) {
   | ([Grab, ...c], env, [Z(v), ...s]) => (c, [ZE(v), ...env], s)
   | ([Grab, ...c], env, [Clos(v), ...s]) => (c, [ClosE(v), ...env], s)

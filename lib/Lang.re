@@ -85,9 +85,9 @@ let pretty_lang_rev = (l: lang, rev: bool) => {
     | Z => "Z"
     | S(l) =>
       if (rev) {
-        Printf.sprintf("%s S", pretty_lang(l));
+        Printf.sprintf("(%s S)", pretty_lang(l));
       } else {
-        Printf.sprintf("S(%s)", pretty_lang(l));
+        Printf.sprintf("(S %s)", pretty_lang(l));
       }
     };
   pretty_lang(l);
